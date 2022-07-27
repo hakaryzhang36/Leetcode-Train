@@ -42,10 +42,11 @@ def Gen_markdown_table_2d(data: np.array, head_names: tuple, ):
         for f in dl:
             if os.path.isdir(path + '/' + f):
                 if f == 'cpp':
-                    links.append('[C++]' + '(https://github.com/hakaryzhang36/Leetcode/Hot100/' + str(item[0]) + '%' + item[1]  + '/cpp)')
+                    links.append(
+                        '[C++]' + '(https://github.com/hakaryzhang36/Leetcode/tree/main/Hot100/' + str(item[0]) + '%20' + item[1] + '/cpp)')
                 if f == 'py':
-                    links.append('[Python]' + '(https://github.com/hakaryzhang36/Leetcode/Hot100/' + str(
-                        item[0]) + '%' + item[1] + '/py)')
+                    links.append('[Python]' + '(https://github.com/hakaryzhang36/Leetcode/tree/main/Hot100/' + str(
+                        item[0]) + '%20' + item[1] + '/py)')
         sol = ','.join(links)
 
         line = '|{}|\n'.format('|'.join([info, sol]))
