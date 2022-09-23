@@ -1,5 +1,9 @@
 // Leetcode 203-remove-linked-list-elements
 class Solution {
+    public static void main(String[] args) {
+        ListNode a = new ListNode(1);
+        System.out.println(a.val);
+    }
     static class ListNode {
         int val;
         ListNode next;
