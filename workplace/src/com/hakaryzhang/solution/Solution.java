@@ -1,5 +1,6 @@
 package com.hakaryzhang.solution;
 
+import java.lang.reflect.*;
 import java.util.*;
 
 public class Solution implements Cloneable{
@@ -24,10 +25,41 @@ public class Solution implements Cloneable{
         // 引用类型是浅复制
         System.out.println(s1.list);    // [1, 2]
         System.out.println(s2.list);    // [1, 2]
+
+        System.out.println("------------------");
+
+        Solution s = new Child();
+        System.out.println(s.getClass());
+        s.func();
+
+        List<Integer> list = new ArrayList<Integer>();
+
+        // dynamic proxy
+        InvocationHandler handler = new InvocationHandler() {
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                System.out.println(method);
+                if (method.getName().equals("morning")) {
+                    System.out.println("Good morning, " + args[0]);
+                }
+                return null;
+            }
+        };
+        Hello hello = (Hello) Proxy.newProxyInstance(
+                Hello.class.getClassLoader(), // 传入ClassLoader
+                new Class[] { Hello.class }, // 传入要实现的接口
+                handler); // 传入处理调用方法的InvocationHandler
+        hello.morning("Bob");
     }
+
+    public Solution func() {
+        return this;
+    }
+
 
     int i;
     List<Integer> list = new ArrayList<Integer>();
+
 
     @Override
     public Object clone() {
@@ -40,32 +72,17 @@ public class Solution implements Cloneable{
         return o;
     }
 
-    // Leetcode 242-valid-anagram
-    public boolean isAnagram(String s, String t) {
-        HashMap<Character, Integer> map = new HashMap<Character, Integer>();
-        for (char ch : s.toCharArray()) {
-            if (!map.containsKey(ch)) {
-                map.put(ch, 1);
-            }
-            else {
-                map.replace(ch, map.get(ch) + 1);
-            }
-        }
+    char c = new String().charAt(1);
+}
 
-        for (char ch : t.toCharArray()) {
-            if (!map.containsKey(ch)) {
-                return false;
-            }
-            else {
-                map.replace(ch, map.get(ch) - 1);
-                if(map.get(ch) == 0) {
-                    map.remove(ch);
-                }
-            }
-        }
-
-        return map.size() == 0;
-
+class Child extends Solution {
+    @Override
+    public void func() {
+        super.func();
+        System.out.println("Child's func()");
     }
+}
 
+interface Hello {
+    void morning(String name);
 }
