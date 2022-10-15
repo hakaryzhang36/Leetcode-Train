@@ -1,15 +1,6 @@
-package com.hakaryzhang.solution;
-
-import java.lang.reflect.*;
-import java.util.*;
-
-public class Solution implements Cloneable{
-
-    public static void main(String[] args) {
-        String s = "ababcaabc";
-        new Solution().getNext(s);
-    }
-
+// Leetcode 28-find-the-index-of-the-first-occurrence-in-a-string
+// mark
+class Solution {
     public int strStr(String haystack, String needle){
         int[] next = getNext(needle);
         for (int i = 0, j = 0; i < haystack.length(); i++) {
@@ -63,5 +54,3 @@ public class Solution implements Cloneable{
         return next;
     }
 }
-
-
