@@ -1,13 +1,6 @@
-package com.hakaryzhang.solution;
-
-import java.lang.reflect.*;
-import java.util.*;
-
+// Leetcode 239-sliding-window-maximum
+// mark
 class Solution {
-    public static void main(String[] args) {
-        int[] nums = {7, 2, 4};
-        System.out.println(new Solution().maxSlidingWindow(nums, 2));
-    }
     public int[] maxSlidingWindow(int[] nums, int k) {
         // New method
         Deque<Integer> q = new LinkedList<>();
@@ -16,11 +9,11 @@ class Solution {
             System.out.println(R);
             // remove first
             if (q.size() != 0 && q.peekFirst() < L) {
-                q.removeLast();
+                q.removeFirst();
             }
             // add last
             while (q.size() != 0 && nums[q.peekLast()] < nums[R]) {
-                q.removeLast();
+                    q.removeLast();
             }
             q.addLast(R);
             // update L R
@@ -38,5 +31,3 @@ class Solution {
         return res;
     }
 }
-
-
