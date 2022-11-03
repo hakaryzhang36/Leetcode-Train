@@ -18,28 +18,18 @@ class Solution {
         return res;
     }
 
-    public boolean inorder(TreeNode root) {
+    public boolean postorder(TreeNode root) {
         if (root == null) {
             return false;
         }
 
-        boolean l = inorder(root.left);
-        boolean r = inorder(root.right);
-        if (res != null) {
-            return true;    // finish, clear stack
-        }
-        if ((l || r) && (root == p || root == q)) { // root is ancestor
+        boolean l = postorder(root.left);
+        boolean r = postorder(root.right);
+        if ((l && r) || (l || r) && (root == p || root == q)) { // root is ancestor
             res = root;
             return true;
         }
-        if (root == p || root == q) {   // root is one of target
-            return true;
-        }
-        if (l && r) {   // root is ancestor
-            res = root;
-            return true;
-        }
-        if (l || r) {   // find one
+        if (root == p || root == q || l || r) {   // find one target (root or in subTree)
             return true;
         }
         return false;
