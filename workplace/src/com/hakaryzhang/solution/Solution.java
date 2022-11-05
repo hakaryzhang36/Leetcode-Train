@@ -12,8 +12,6 @@ class Solution {
         System.out.println(n1);
     }
 
-    public 
-
 }
 
 
