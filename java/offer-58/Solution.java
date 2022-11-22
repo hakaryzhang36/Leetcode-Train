@@ -1,4 +1,4 @@
-// Leetcode 剑指Offer-58-zuo-xuan-zhuan-zi-fu-chuan-lcof
+// Leetcode offer-58
 class Solution {
     public String reverseLeftWords(String s, int n) {
         // reverse front string

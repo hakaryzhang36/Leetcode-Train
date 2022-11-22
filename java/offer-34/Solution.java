@@ -1,4 +1,4 @@
-// Leetcode offer-34-二叉树中和为某一值的路径
+// Leetcode offer-34
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
