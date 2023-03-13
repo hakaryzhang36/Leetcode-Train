@@ -1,6 +1,7 @@
 // Leetcode 72-edit-distance
 // mark
 // 能解出来的困难题！
+// 然后几个月后再看就不会了……
 class Solution {
     public int minDistance(String word1, String word2) {
         if (word1.length() == 0) {

@@ -1,5 +1,6 @@
 // Leetcode 19-remove-nth-node-from-end-of-list
 // mark
+// done
 /**
  * Definition for singly-linked list.
  * public class ListNode {
@@ -12,31 +13,23 @@
  */
 class Solution {
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        if (head == null) {
-            return head;
+        ListNode nj = head;
+        ListNode ni = head;
+        ListNode p = null;
+        for (int k = 1; k < n && nj.next != null; k++) {
+            nj = nj.next;
         }
-        ListNode tail = head;
-        for (int i = 1; i < n; i++) {
-            if (tail == null) {
-                return head;
-            }
-            tail = tail.next;
+        while (nj.next != null) {
+            p = ni;
+            ni = ni.next;
+            nj = nj.next;
         }
-        ListNode cur = head, pre = null;
-        // move cur to the last n node
-        while(tail.next != null) {
-            pre = cur;
-            tail = tail.next;
-            cur = cur.next;
-        }
-        // remove cur node
-        if (pre != null) {
-            pre.next = cur.next;
+        if (ni == head) {
+            return ni.next;
         }
         else {
-            head = head.next;
+            p.next = ni.next;
+            return head;
         }
-        return head;
-        
     }
 }

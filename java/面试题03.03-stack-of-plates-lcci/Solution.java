@@ -1,4 +1,4 @@
-// Leetcode 面试题03.03.-stack-of-plates-lcci
+// Leetcode 面试题03.03-stack-of-plates-lcci
 class StackOfPlates {
     int cap;
     List<int[]> stackList = new ArrayList<>();

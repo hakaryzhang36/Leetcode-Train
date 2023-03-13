@@ -1,48 +1,37 @@
-// Leetcode 54
-// mark
-public class Solution {
-    public List<Integer> spiralOrder(int[][] matrix) {
-        int m = matrix.length, n = matrix[0].length;
-        List<Integer> ans = new ArrayList<>();
-        int iMaxStep = m - 1, kMaxStep = n - 1, iStep = 1, kStep = 1;
-        for (int i = 0, k = 0, c = 1; c <= m * n;) {
-            if (iMaxStep == 0 && kMaxStep == 0) {
-                ans.add(matrix[i][k]);
-                break;
-            }
-            while (c <= m * n && kStep <= kMaxStep) {
-                ans.add(matrix[i][k]);
-                kStep++;
-                c++;
-                k++;
-            }
-            kStep = 1;
-            while (c <= m * n && iStep <= iMaxStep) {
-                ans.add(matrix[i][k]);
-                iStep++;
-                c++;
-                i++;
-            }
-            iStep = 1;
-            while (c <= m * n && kStep <= kMaxStep) {
-                ans.add(matrix[i][k]);
-                kStep++;
-                c++;
-                k--;
-            }
-            kStep = 1;
-            while (c <= m * n && iStep <= iMaxStep) {
-                ans.add(matrix[i][k]);
-                iStep++;
-                c++;
-                i--;
-            }
-            iStep = 1;
-            i++;
-            k++;
-            iMaxStep -= 2;
-            kMaxStep -= 2;
+// Leetcode 135-candy
+// marked
+// AMAZING IDEA!
+class Solution {
+    int ansf = 0;
+    public int candy(int[] ratings) {
+        Map<Integer, List<Integer>> score2childs = new TreeMap<>();
+        for (int i = 0; i < ratings.length; i++) {
+            List<Integer> list = score2childs.getOrDefault(ratings[i], new ArrayList<Integer>());
+            list.add(i);
+            score2childs.put(ratings[i], list);
         }
-        return ans;
+
+
+        int[] give = new int[ratings.length];
+        int candies = 0;
+        for (Map.Entry<Integer, List<Integer>> e : score2childs.entrySet()) {
+            int s = e.getKey();
+            List<Integer> list = e.getValue();
+            // give candy
+            for (Integer i : list) {
+                int c = 1;
+                if (i-1 >= 0 && ratings[i-1]<s) {
+                    c = Math.max(give[i-1]+1, c);
+                }
+                if (i+1 < ratings.length && ratings[i+1]<s) {
+                    c = Math.max(give[i+1]+1, c);
+                }
+                give[i] = c;
+                candies += c;
+            }
+        }
+
+        return candies;
     }
+
 }

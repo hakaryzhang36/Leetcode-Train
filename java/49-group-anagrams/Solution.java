@@ -1,47 +1,48 @@
 // Leetcode 49-group-anagrams
 // mark
+// done
 class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
-        List<int[]> charMapsList = new ArrayList<int[]>();
-        List<List<String>> classifiedList = new ArrayList<List<String>>();
-        for (String str : strs) {
-            // create a new charMap
-            int[] charMap = new int[26];
-            for (char c : str.toCharArray()) {
-                charMap[(int)c - (int)'a'] += 1;
+        List<List<String>> ans = new ArrayList<>();
+        int[] count = new int[26];
+        boolean[] mark = new boolean[strs.length];
+        for (int i = 0; i < strs.length; i++) {
+            if (mark[i]) {
+                continue;
             }
-
-            // compare new charMap to each charMap
-            boolean isMatch = false;
-            for(int i = 0; !isMatch && i < charMapsList.size(); i++) {
-                int[] existedCharMap = charMapsList.get(i);
+            else {
+                mark[i] = true;
+                List<String> pattern = new ArrayList<>();
+                pattern.add(strs[i]);
                 
-                for (int k = 0; k < 26; k++) {
-                    if (existedCharMap[k] != charMap[k]) {
-                        isMatch = false;
-                        break;
+                count = new int[26];
+                for (int j = 0; j < strs[i].length(); j++) {
+                    count[strs[i].charAt(j) - 'a']++;
+                }
+
+                for (int k = i+1; k < strs.length; k++) {
+                    if (mark[k] || strs[k].length() != strs[i].length()) {
+                        continue;
                     }
                     else {
-                        isMatch = true;
+                        int[] cheak = new int[26];
+                        boolean isMatch = true;
+                        for (int ki = 0; ki < strs[k].length(); ki++) {
+                            if (++cheak[strs[k].charAt(ki)-'a'] > count[strs[k].charAt(ki)-'a']) {
+                                isMatch = false;
+                                break;
+                            }
+                        }
+                        if (isMatch) {
+                            mark[k] = true;
+                            pattern.add(strs[k]);
+                        }
                     }
                 }
 
-                if(isMatch) {
-                classifiedList.get(i).add(str);
-
-                    break;
-                }
-            }
-
-            // if no match, add a new charMap
-            if (!isMatch) {
-                charMapsList.add(charMap);
-                List<String> l = new ArrayList<String>();
-                l.add(str);
-                classifiedList.add(l);
+                ans.add(pattern);
             }
         }
-
-        return classifiedList;
+        return ans;
     }
 }
