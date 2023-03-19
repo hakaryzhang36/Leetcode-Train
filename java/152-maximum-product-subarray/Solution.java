@@ -1,5 +1,5 @@
 // Leetcode 152-maximum-product-subarray
-// mark
+// mark 2
 class Solution {
     public int maxProduct(int[] nums) {
         // max[i], 以 nums[i] 结尾的连续子序列最大乘积
