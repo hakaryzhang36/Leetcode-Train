@@ -1,50 +1,42 @@
-// Leetcode 76
-public class Solution {
+// 76-minimum-window-substring
+class Solution {
     public String minWindow(String s, String t) {
-        // gen character hashmap
-        int[] character = new int[128];
-        for (char ch : t.toCharArray()) {
-            character[ch]++;
+        Map<Character, Integer> total = new HashMap<>();
+        for (int i = 0; i < t.length(); i++) {
+            total.put(t.charAt(i), total.getOrDefault(t.charAt(i), 0)+1);
         }
-        for (int i = 0; i < character.length; i++) {
-            character[i] = character[i] == 0 ? -999999999 : character[i];
-        }
-        // scan s
-        int notMatch = t.length(); // count of not match character in t
-        int minLow = -1, minTop = -1;
-        for (int low = 0, top = 0; top < s.length(); top++) {
-            if (character[s.charAt(top)] == -999999999) {
-                continue;
-            }
-            else {
-                character[s.charAt(top)]--;
-                if (character[s.charAt(top)] >= 0) {
-                    notMatch--;
+        int n = t.length();
+        int all = 0;
+        Map<Character, Integer> count = new HashMap<>();
+        String ans = "";
+        for (int i=0, j=0; j < s.length(); j++) {
+            char c = s.charAt(j);
+            // 更新 count
+            if (total.containsKey(c)) {
+                count.put(c, count.getOrDefault(c, 0)+1);
+                if (count.get(c) <= total.get(c)) {
+                    all++;
                 }
             }
-            // move low, until notMatch > 0
-            while (notMatch == 0) {
-                // update substring min length
-                int l = top - low + 1;
-                if (l < minTop - minLow + 1 || minLow == -1) {
-                    minLow = low;
-                    minTop = top;
-                }
-                if (character[s.charAt(low)] != -999999999) {
-                    character[s.charAt(low)]++;
-                    if (character[s.charAt(low)] > 0) {
-                        notMatch++;
+            // 找到全部
+            if (all == n) {
+                // 移动i
+                while (i <= j) {
+                    if (count.containsKey(s.charAt(i))) {
+                        if (count.get(s.charAt(i)) > total.get(s.charAt(i))) {
+
+                            count.put(s.charAt(i), count.get(s.charAt(i)) - 1);
+                        }
+                        else {
+                            break;
+                        }
                     }
+                    i+=1;
                 }
-                low++;
+                // 更新 ans
+                ans = ans.equals("") || ans.length()>j-i+1 ? s.substring(i, j+1) : ans;
             }
         }
-        // return
-        if (minLow > -1) {
-            System.out.println(minLow);
-            System.out.println(minTop);
-            return s.substring(minLow, minTop + 1);
-        }
-        else return "";
+        return ans;
     }
 }
