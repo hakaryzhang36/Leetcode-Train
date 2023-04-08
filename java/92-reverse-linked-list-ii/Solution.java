@@ -1,6 +1,6 @@
 // Leetcode 92-reverse-linked-list-ii
 // mark
-// solve but slow
+// done but important
 /**
  * Definition for singly-linked list.
  * public class ListNode {
@@ -13,45 +13,45 @@
  */
 class Solution {
     public ListNode reverseBetween(ListNode head, int left, int right) {
-        ListNode L = null;
-        ListNode R = null;
-        ListNode l = null;
-        ListNode r = null;
         ListNode pre = null;
-        ListNode node = head;
-        // 确定边界
+        ListNode cur = head;
+        ListNode pre_start = null;
+        ListNode start = null;
+        ListNode end = null;
         for (int i = 1; i <= right; i++) {
             if (i == left) {
-                l = node;
-                L = pre;
+                pre_start = pre;
+                
+                start = cur;
             }
-            if(i == right){
-                r = node;
-                R = node.next;
+            if (i == right) {
+                end = cur;
             }
-            pre = node;
-            node = node.next;
+            pre = cur;
+            cur = cur.next;
         }
-        // 连接头部
-        if (L != null) {
-            L.next = r;
+        if (pre_start == null) {
+            return reverse(start, end, pre_start, cur);
         }
         else {
-            head = r;
+            reverse(start, end, pre_start, cur);
+            return head;
         }
-        // 切断
-        r.next = null;
-        ListNode n1 = l;
-        ListNode n2 = l.next;
-        // 连接尾部
-        n1.next = R;
-        while (n2 != null) {
-            ListNode t = n2.next;
-            n2.next = n1;
-            n1 = n2;
-            n2 = t;
-        }
+    }
 
-        return head;
+    public ListNode reverse(ListNode head, ListNode tail, ListNode pre, ListNode next) {
+        ListNode a = head;
+        ListNode b = head.next;
+        a.next = next;
+        while (a != tail) {
+            ListNode t = b.next;
+            b.next = a;
+            a = b;
+            b = t;
+        }
+        if (pre != null) {
+            pre.next = tail;
+        }
+        return tail;
     }
 }

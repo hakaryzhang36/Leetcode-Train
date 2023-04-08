@@ -26,6 +26,6 @@ class Solution {
                 q.addFirst(c);
             }
         }
-        return q.size() == 0
+        return q.size() == 0;
     }
 }
