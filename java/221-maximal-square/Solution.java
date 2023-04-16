@@ -1,37 +1,52 @@
 // Leetcode 221-maximal-square
-// mark
-// done, but not the best
+// good idea
 class Solution {
-    char[][] matrix;
+    char[][] matrix = null;
+    int[][] len = null;
+    int max = 0;
     public int maximalSquare(char[][] matrix) {
         this.matrix = matrix;
-        int max = 0;
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                boolean isSquare = true;
-                for (int trySize = 1; isSquare && i+trySize-1 < matrix.length && j+trySize-1 < matrix[0].length; trySize++) {
-                    if (isSquare = cheak(i, j, trySize)) {
-                        max = Math.max(max, trySize*trySize);
-                    }
-                }
+        len = new int[matrix.length][matrix[0].length];
+        len[0][0] = matrix[0][0]=='1'?1:0;
+        max = len[0][0];
+        for (int a = 1, b = 1; a < matrix.length || b < matrix[0].length; a++, b++) {
+            if (a < matrix.length) {
+                update_1(a, Math.min(b, matrix[0].length-1));
+            }
+            if (b < matrix[0].length) {
+                update_2(Math.min(a, matrix.length-1), b);
             }
         }
         return max;
     }
 
-    public boolean cheak(int i, int j, int trySize) {
-        // System.out.println(i + " " + j);
-        for(int p = i, q = j+trySize-1; p < i+trySize; p++) {
-            if (matrix[p][q] != '1') {
-                // System.out.println(p + " " + q);
-                return false;
+    public void update_1(int a, int b) {
+        for (int j = 0; j <= b; j++) {
+            if (j == 0) {
+                len[a][j] = matrix[a][j]=='1'?1:0;
             }
-        }
-        for(int p = i+trySize-1, q = j; q < j+trySize; q++) {
-            if (matrix[p][q] != '1') {
-                return false;
+            else if (matrix[a][j] == '1') {
+                len[a][j] = 1 + Math.min(len[a][j-1], Math.min(len[a-1][j], len[a-1][j-1]));
             }
+            else {
+                len[a][j] = 0;
+            }
+            max = Math.max(max, len[a][j]*len[a][j]);
         }
-        return true;
+    }
+
+    public void update_2(int a, int b) {
+        for (int i = 0; i <= a; i++) {
+            if (i == 0) {
+                len[i][b] = matrix[i][b]=='1'?1:0;
+            }
+            else if (matrix[i][b] == '1') {
+                len[i][b] = 1 + Math.min(len[i-1][b], Math.min(len[i][b-1], len[i-1][b-1]));
+            }
+            else {
+                len[i][b] = 0;
+            }
+            max = Math.max(max, len[i][b]*len[i][b]);
+        }
     }
 }

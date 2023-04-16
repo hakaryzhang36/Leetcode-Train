@@ -2,10 +2,13 @@
 // mark
 class Solution {
     public int singleNumber(int[] nums) {
-        int ans = 0;
-        for (int num : nums) {
-            ans ^= num;
+        if (nums.length == 1) {
+            return nums[0];
         }
-        return ans;
+        int t = nums[0] ^ nums[1];
+        for (int i = 2; i < nums.length; i++) {
+            t ^= nums[i];
+        }
+        return t;
     }
 }
