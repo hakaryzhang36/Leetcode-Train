@@ -1,42 +1,57 @@
-// 76-minimum-window-substring
+// Leetcode 76-minimum-window-substring
+// mark
+// done
 class Solution {
     public String minWindow(String s, String t) {
-        Map<Character, Integer> total = new HashMap<>();
-        for (int i = 0; i < t.length(); i++) {
-            total.put(t.charAt(i), total.getOrDefault(t.charAt(i), 0)+1);
-        }
+        int[] ct = new int[52];
         int n = t.length();
-        int all = 0;
-        Map<Character, Integer> count = new HashMap<>();
-        String ans = "";
-        for (int i=0, j=0; j < s.length(); j++) {
-            char c = s.charAt(j);
-            // 更新 count
-            if (total.containsKey(c)) {
-                count.put(c, count.getOrDefault(c, 0)+1);
-                if (count.get(c) <= total.get(c)) {
-                    all++;
+        for (int i = 0; i < t.length(); i++) {
+            ct[getPos(t.charAt(i))]++;
+        }
+
+        // find start position
+        int p = 0;
+        while (p < s.length() && ct[getPos(s.charAt(p))] == 0) {
+            p++;
+        }
+
+        if (p == s.length()) return "";
+
+        // mark list
+        int[] mark = new int[52];
+        mark[getPos(s.charAt(p))] = 1;
+        int c = 1;
+        if (n == c) return t;
+
+        String res = "";
+        for (int q = p+1; q < s.length(); q++) {
+            char ch = s.charAt(q);
+            int pos = getPos(ch);
+            if (ct[pos] == 0) {
+                continue;
+            }
+            if (ct[pos] > mark[pos]) {
+                mark[pos]++;
+                c++;
+            }
+            else {
+                mark[pos]++;
+                while (mark[getPos(s.charAt(p))] > ct[getPos(s.charAt(p))] || ct[getPos(s.charAt(p))] == 0) {
+                    mark[getPos(s.charAt(p))] = Math.max(0, mark[getPos(s.charAt(p))]-1);
+                    p++;
                 }
             }
-            // 找到全部
-            if (all == n) {
-                // 移动i
-                while (i <= j) {
-                    if (count.containsKey(s.charAt(i))) {
-                        if (count.get(s.charAt(i)) > total.get(s.charAt(i))) {
-
-                            count.put(s.charAt(i), count.get(s.charAt(i)) - 1);
-                        }
-                        else {
-                            break;
-                        }
-                    }
-                    i+=1;
-                }
-                // 更新 ans
-                ans = ans.equals("") || ans.length()>j-i+1 ? s.substring(i, j+1) : ans;
+            if (c == n) {
+                res = res.equals("") || res.length() > q-p+1 ? s.substring(p, q+1) : res;
             }
         }
-        return ans;
+
+        return res;
+        
+    }
+
+    public int getPos(char c) {
+        if (c >= 'a' && c <= 'z') return c-'a';
+        else return 26 + (c - 'A');
     }
 }

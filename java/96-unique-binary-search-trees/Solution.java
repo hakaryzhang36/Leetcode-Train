@@ -1,29 +1,15 @@
 // Leetcode 96-unique-binary-search-trees
 // mark
+// done
 class Solution {
-    int[] mark;
-    int ans = 0;
     public int numTrees(int n) {
-        mark = new int[n+1];
-        mark[0] = 1;
-        mark[1] = 1;
+        int[] nums = new int[n+1];
+        nums[0] = 1;
         for (int i = 1; i <= n; i++) {
-            ans = ans + (genTree(i-1)*genTree(n-i));
-        }
-        return ans;
-    }
-
-    private int genTree(int size) {
-        int ans = 0;
-        if (mark[size] != 0) {
-            return mark[size];
-        }
-        else {
-            for (int i = 1; i <= size; i++) {
-                ans = ans + (genTree(i-1)*genTree(size-i));
+            for (int k = 0; k <= i-1; k++) {
+                nums[i] += nums[k]*nums[i-k-1];
             }
         }
-        return ans;
+        return nums[n];
     }
-    
 }
