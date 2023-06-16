@@ -1,19 +1,27 @@
 // Leetcode 206-reverse-linked-list
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
 class Solution {
     public ListNode reverseList(ListNode head) {
-        ListNode pre = head;
-        if (pre == null || pre.next == null) {
+        if (head == null) {
             return head;
         }
-        
-        ListNode cur = pre.next;
-        pre.next = null;
-        while (cur != null) {
-            ListNode t = cur.next;
-            cur.next = pre;
-            pre = cur;
-            cur = t;
+        ListNode newHead = head, p = head.next;
+        newHead.next = null;
+        while (p != null) {
+            ListNode t = p.next;
+            p.next = newHead;
+            newHead = p;
+            p = t;
         }
-        return pre;
+        return newHead;
     }
 }
