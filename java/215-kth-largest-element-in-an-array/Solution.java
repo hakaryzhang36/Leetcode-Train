@@ -2,39 +2,24 @@
 // mark
 // done
 class Solution {
-    int k;
     public int findKthLargest(int[] nums, int k) {
-        this.k = nums.length - k + 1;
-        return quickSort(nums, 0, nums.length - 1);
-    }
-
-    private int quickSort(int[] nums, int s, int e) {
-        if (s > e) {
-            return -1;
-        }
-        int i = s-1;
-        int j = s;
-        while (j < e) {
-            if (nums[j] < nums[e]) {
-                i++;
-                int t = nums[j];
-                nums[j] = nums[i];
-                nums[i] = t;
+        Queue<Integer> q = new PriorityQueue<Integer>(new Comparator<Integer>(){
+            @Override
+            public int compare(Integer a, Integer b) {
+                if (a == b) return 0;
+                else return a > b ? 1 : -1;
             }
-            j++;
+        });
+
+        for (int num : nums) {
+            if (q.size() < k) {
+                q.add(num);
+            } else if (q.peek() < num) {
+                q.poll();
+                q.add(num);
+            }
         }
-        i += 1;
-        int t = nums[e];
-        nums[e] = nums[i];
-        nums[i] = t;
-        if (i+1 == k) {
-            return nums[i];
-        }
-        else if (i+1 > k) {
-            return quickSort(nums, 0, i-1);
-        }
-        else {
-            return quickSort(nums, i+1, e);
-        }  
+
+        return q.peek();
     }
 }

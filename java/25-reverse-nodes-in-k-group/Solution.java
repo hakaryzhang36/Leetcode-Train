@@ -1,6 +1,6 @@
 // Leetcode 25-reverse-nodes-in-k-group
 // mark
-// HARD IN DETAIL
+// HARD IN DETAIL. Happy redo ^_^
 /**
  * Definition for singly-linked list.
  * public class ListNode {
@@ -13,50 +13,50 @@
  */
 class Solution {
     public ListNode reverseKGroup(ListNode head, int k) {
-        ListNode resHead = null;
-        ListNode h = head;      // 反转前头节点   
-        ListNode e = head;      // 反转前尾节点
-        ListNode f = null;     // 前一段链表尾节点
-        ListNode b = null;
-        while (e != null) {
-            // 确定 e 位置
-            for (int i = 1; e != null && i < k; i++) {
-                e = e.next;
-            }
-
-            // 到头
-            if (e == null) {
-                break;
-            }
-            b = e.next;
-
-            // 确定最终头节点
-            if (resHead == null) {
-                resHead = e;
-            }
-
-            // 标记前指针、后指针
-            ListNode pre = h;
-            ListNode p = h.next;
-
-            // 前后指针完成反转
-            for (int i = 2; i <= k; i++) {
-                ListNode t = p.next;
-                p.next = pre;
-                pre = p;
-                p = t;
-            }
-            // 前一段连上尾节点
-            if (f != null) {
-                f.next = e;
-            }
-            h.next = b;
+        ListNode p, q, newHead = null, newEnd = null;
+        p = head;
+        while (p != null) {
+            q = getQ(p, k);
+            if (q == null) {
+                if (p == head) return head;
+                else {
+                    newEnd.next = p;
+                    return newHead;
+                }
+            } 
+            ListNode pt = q.next;
+            q.next = null;
+            reverse(p);
             
-            // new start
-            f = h;
-            h = b;
-            e = b;
+            if (newHead == null) newHead = q;
+            if (newEnd == null) newEnd = p;
+            else {
+                newEnd.next = q;
+                newEnd = p;
+            }
+            p = pt;
         }
-        return resHead;
+        return newHead;
+    }
+
+    public ListNode getQ(ListNode p, int k) {
+        int c = 1;
+        ListNode q = p;
+        while(c < k) {
+            if (q.next == null) return null;
+            q = q.next;
+            c++;
+        }
+        return q;
+    }
+
+    public void reverse(ListNode p) {
+        ListNode prev = null;
+        while (p != null) {
+            ListNode n = p.next;
+            p.next = prev;
+            prev = p;
+            p = n;
+        }
     }
 }
