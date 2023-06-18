@@ -1,44 +1,42 @@
 // Leetcode 15-3sum
 // mark
 class Solution {
-    Set<String> mark = new HashSet<>();
     public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
         Arrays.sort(nums);
-        List<List<Integer>> ans = new ArrayList<>();
-        for (int k = 0; k <= nums.length-3; k++) {
-            for (int i=k+1, j=nums.length-1; i<j;) {
-                if (nums[k] + nums[i] + nums[j] == 0) {
-                    if (check(nums[k], nums[i], nums[j])) {
-                        List<Integer> l = new ArrayList<>();
-                        l.add(nums[k]);
-                        l.add(nums[i]);
-                        l.add(nums[j]);
-                        ans.add(l);
-                    }
-                    i++;
+        int p = 0;
+        while(p < nums.length-2) {
+            int q = p+1;
+            while(q < nums.length-1) {
+                int target = -(nums[p] + nums[q]);
+                boolean b = find(target, nums, q+1, nums.length-1);
+                if (b) {
+                    List<Integer> l = new ArrayList<>();
+                    l.add(nums[p]);
+                    l.add(nums[q]);
+                    l.add(target);
+                    res.add(l);
                 }
-                else if (nums[k] + nums[i] + nums[j] > 0) {
-                    j--;
-                }
-                else {
-                    i++;
-                }
+                q = move(q, nums);
             }
+            p = move(p, nums);
         }
-        return ans;
+        return res;
     }
 
-    private boolean check(int a, int b, int c) {
-        int t1 = Math.min(Math.min(a, b), c);
-        int t2 = Math.max(Math.max(a, b), c);
-        int t3 = -(t1+t2);
-        String s = String.valueOf(t1) + " " + String.valueOf(t2) + " " + String.valueOf(t3);
-        if (mark.contains(s)) {
-            return false;
-        }
-        else {
-            mark.add(s);
-            return true;
-        }
+    public boolean find(int target, int[] nums, int h, int e) {
+        if (h > e) return false;
+        if (target < nums[h] || target > nums[e]) return false;
+        int m = (h + e) / 2;
+        if (nums[m] == target) return true;
+        if (nums[m] > target) return find(target, nums, h, m-1);
+        if (nums[m] < target) return find(target, nums, m+1, e);
+        return false;
+    }
+
+    public int move(int p, int[] nums) {
+        p = p + 1;
+        while(p < nums.length && nums[p] == nums[p-1]) p++;
+        return p;
     }
 }
