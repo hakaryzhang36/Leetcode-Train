@@ -1,31 +1,25 @@
 // Leetcode 20-valid-parentheses
 class Solution {
     public boolean isValid(String s) {
-        Deque<Character> q = new ArrayDeque<>();
+        Stack<Character> q = new Stack<>();
         for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (c == ')') {
-                if (q.size() != 0 && q.peekFirst() == '(') {
-                    q.pollFirst();
-                }
-                else return false;
+            if (s.charAt(i) == ')') {
+                if (q.isEmpty() || q.peek() != '(') return false;
+                else q.pop();
             }
-            else if (c == ']') {
-                if (q.size() != 0 && q.peekFirst() == '[') {
-                    q.pollFirst();
-                }
-                else return false;
+            else if (s.charAt(i) == ']') {
+                if (q.isEmpty() || q.peek() != '[') return false;
+                else q.pop();
             }
-            else if (c == '}') {
-                if (q.size() != 0 && q.peekFirst() == '{') {
-                    q.pollFirst();
-                }
-                else return false;
+            else if (s.charAt(i) == '}') {
+                if (q.isEmpty() || q.peek() != '{') return false;
+                else q.pop();
             }
             else {
-                q.addFirst(c);
+                q.push(s.charAt(i));
             }
         }
-        return q.size() == 0;
+        if (!q.isEmpty()) return false;
+        return true;
     }
 }
