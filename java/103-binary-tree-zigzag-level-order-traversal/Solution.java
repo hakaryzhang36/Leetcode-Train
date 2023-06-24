@@ -16,44 +16,37 @@
  */
 class Solution {
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-        List<List<Integer>> lists = new ArrayList<>();
-        if (root == null) {
-            return lists;
-        }
+        List<List<Integer>> r = new ArrayList<>();
+
         Deque<TreeNode> q = new ArrayDeque<>();
+
+        if(root == null) return r;
+
         q.addFirst(root);
-        boolean goL = false;
-        while (!q.isEmpty()) {
-            Deque<TreeNode> t = new ArrayDeque<>();
-            List<Integer> list = new ArrayList<>();
-            while (!q.isEmpty()) {
-                TreeNode node = null;
-                if (goL) {
-                    node = q.pollLast();
-                    list.add(node.val);
-                    if (node.right != null) {
-                        t.addFirst(node.right);
-                    }                    
-                    if (node.left != null) {
-                        t.addFirst(node.left);
-                    }
+
+        boolean l2r = true;
+
+        while(!q.isEmpty()) {
+            List<Integer> l = new ArrayList<>();
+            Deque<TreeNode> qt = new ArrayDeque<>();
+            while(!q.isEmpty()) {
+                TreeNode n = l2r ? q.pollFirst() : q.pollLast();
+                l.add(n.val);
+                if(l2r) {
+                    if(n.left != null) qt.addLast(n.left);
+                    if(n.right != null) qt.addLast(n.right);
                 }
                 else {
-                    node = q.pollFirst();
-                    list.add(node.val);
-                    if (node.left != null) {
-                        t.addLast(node.left);
-                    }
-                    if (node.right != null) {
-                        t.addLast(node.right);
-                    } 
+                    if(n.right != null) qt.addFirst(n.right);
+                    if(n.left != null) qt.addFirst(n.left);
                 }
+                
             }
-            q = t;
-            goL = !goL;
-            lists.add(list);
+            r.add(l);
+            q = qt;
+            l2r = !l2r;
         }
-        return lists;
-    }
 
+        return r;
+    }
 }
