@@ -1,37 +1,47 @@
 // Leetcode 135-candy
 // marked
-// AMAZING IDEA!
+// AMAZING IDEA! But still fail...
 class Solution {
-    int ansf = 0;
-    public int candy(int[] ratings) {
-        Map<Integer, List<Integer>> score2childs = new TreeMap<>();
-        for (int i = 0; i < ratings.length; i++) {
-            List<Integer> list = score2childs.getOrDefault(ratings[i], new ArrayList<Integer>());
-            list.add(i);
-            score2childs.put(ratings[i], list);
-        }
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> r = new ArrayList<>();
+        int up = 0, down = matrix.length-1, left = 0, right = matrix[0].length-1;
 
+        int i = 0, j = -1;
 
-        int[] give = new int[ratings.length];
-        int candies = 0;
-        for (Map.Entry<Integer, List<Integer>> e : score2childs.entrySet()) {
-            int s = e.getKey();
-            List<Integer> list = e.getValue();
-            // give candy
-            for (Integer i : list) {
-                int c = 1;
-                if (i-1 >= 0 && ratings[i-1]<s) {
-                    c = Math.max(give[i-1]+1, c);
-                }
-                if (i+1 < ratings.length && ratings[i+1]<s) {
-                    c = Math.max(give[i+1]+1, c);
-                }
-                give[i] = c;
-                candies += c;
+        while(true) {
+            while(j+1 <= right) {
+                j += 1;
+                r.add(matrix[i][j]);
             }
+            up++;
+
+            if(up > down) break;
+
+            while(i+1 <= down){
+                i += 1;
+                r.add(matrix[i][j]);
+            }
+            right--;
+
+            if(left > right) break;
+
+            while(j-1 >= left) {
+                j -= 1;
+                r.add(matrix[i][j]);
+            }
+            down--;
+
+            if(up > down) break;
+
+            while(i-1 >= up){
+                i -= 1;
+                r.add(matrix[i][j]);
+            }
+            left++;
+
+            if(left > right) break;
         }
 
-        return candies;
+        return r;
     }
-
 }

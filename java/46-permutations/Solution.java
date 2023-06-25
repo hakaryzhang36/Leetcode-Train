@@ -1,28 +1,26 @@
 // Leetcode 46-permutations
 class Solution {
-    List<List<Integer>> res = new ArrayList<>();
+    List<List<Integer>> r = new ArrayList<>();
     public List<List<Integer>> permute(int[] nums) {
-        LinkedList<Integer> list = new LinkedList<>();
-        boolean[] picked = new boolean[nums.length];
-        reverse(list, picked, nums);
-        return res;
+        
+        sub(new ArrayList<Integer>(), nums, new boolean[nums.length]);
+
+        return r;
     }
 
-    private void reverse(LinkedList<Integer> list, boolean[] picked, int[] nums) {
-        // terminal
-        if(list.size() == nums.length) {
-            res.add(new LinkedList<Integer>(list));
-            return;
-        }
-
-        // choose a unpicked number
-        for (int i = 0; i < picked.length; i++) {
-            if (!picked[i]) {
-                picked[i] = true;
-                list.add(nums[i]);
-                reverse(list, picked, nums);
-                picked[i] = false;
-                list.removeLast();
+    public void sub(ArrayList<Integer> l, int[] nums, boolean[] m) {
+        for (int i = 0; i < nums.length; i++) {
+            if(!m[i]) {
+                m[i] = true;
+                l.add(nums[i]);
+                if(l.size() < nums.length) {
+                    sub(l, nums, m);
+                }
+                else {
+                    r.add((List<Integer>)l.clone());
+                }
+                m[i] = false;
+                l.remove(l.size()-1);
             }
         }
     }
